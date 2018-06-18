@@ -41,20 +41,20 @@ func (dw *DownloadFile) Download() (int64, error) {
 	resp, err := http.Get(dw.Url.String())
 
 	if err != nil {
-		return bdw, errors.New(fmt.Sprintf("download_file: %s", err))
+		return bdw, errors.New(fmt.Sprintf("download_file get action: %s", err))
 	}
 	defer resp.Body.Close()
 	extension := strings.Split(resp.Header.Get("Content-type"), "/")[1]
 
 	output, err := os.Create(dw.Filename + "." + extension)
 	if err != nil {
-		return bdw, errors.New(fmt.Sprintf("download_file: %s", err))
+		return bdw, errors.New(fmt.Sprintf("download_file file creation: %s", err))
 	}
 	defer output.Close()
 
 	bdw, err = io.Copy(output, resp.Body)
 	if err != nil {
-		return bdw, errors.New(fmt.Sprintf("download_file: %s", err))
+		return bdw, errors.New(fmt.Sprintf("download_file copy download file to local file: %s", err))
 	}
 
 	return bdw, nil
