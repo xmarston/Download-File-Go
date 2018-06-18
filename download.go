@@ -38,7 +38,14 @@ func (dw *DownloadFile) Download() (int64, error) {
 	var (
 		bdw int64
 	)
-	resp, err := http.Get(dw.Url.String())
+	
+	tr := &http.Transport{
+		MaxIdleConns:       20,
+		MaxIdleConnsPerHost:  20,
+	}
+	netClient := &http.Client{Transport: tr}
+	
+	resp, err := netClient.Get(dw.Url.String())
 
 	if err != nil {
 		return bdw, errors.New(fmt.Sprintf("download_file get action: %s", err))
