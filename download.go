@@ -43,7 +43,10 @@ func (dw *DownloadFile) Download() (int64, error) {
 		MaxIdleConns:       20,
 		MaxIdleConnsPerHost:  20,
 	}
-	netClient := &http.Client{Transport: tr}
+	netClient := &http.Client{
+		Transport: tr,
+		Timeout:   time.Duration(20 * time.Second),
+	}
 	
 	resp, err := netClient.Get(dw.Url.String())
 
